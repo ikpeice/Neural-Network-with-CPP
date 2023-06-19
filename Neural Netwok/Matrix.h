@@ -16,11 +16,13 @@ public:
 	Matrix* operator-(double scalar);
 	Matrix* transpose();
 	void setValue(int r, int c, double v);
+	void setMatrix(int r_size, int c_size, double v[][3]);
 	double getValue(int r, int c);
 	double getRandomNumber();
 	void printValues();
 	int getNumCol() { return numCols; }
 	int getNumRows() { return numRows; }
+	Matrix *dot(Matrix *b);
 	Matrix *multiply(Matrix *b);
 
 private:

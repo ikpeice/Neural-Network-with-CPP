@@ -96,6 +96,15 @@ void Matrix::setValue(int r, int c, double v)
 	Values.at(r).at(c) = v;
 }
 
+void Matrix::setMatrix(int r_size,int c_size, double v[][3])
+{
+	for (int r = 0;r < r_size;r++) {
+		for (int c = 0;c < c_size;c++) {
+			setValue(r, c, v[r][c]);
+		}
+	}
+}
+
 double Matrix::getValue(int r, int c)
 {
 	return Values.at(r).at(c);
@@ -116,7 +125,7 @@ void Matrix::printValues()
 	}
 }
 
-Matrix* Matrix::multiply(Matrix *b)
+Matrix* Matrix::dot(Matrix *b)
 {
 	assert(this->numCols == b->numRows);
 	Matrix *c = new Matrix(this->numRows, b->numCols, false);
@@ -128,6 +137,21 @@ Matrix* Matrix::multiply(Matrix *b)
 			}
 			c->setValue(i, j, v);
 			v = 0.0;
+		}
+	}
+
+	return c;
+}
+
+Matrix* Matrix::multiply(Matrix *b)
+{
+	assert(this->numCols == b->numCols && this->numRows==b->numRows);
+	Matrix *c = new Matrix(this->numRows, b->numCols, false);
+	double v = 0.00;
+	for (int i = 0;i < this->numRows;i++) {	// 3x2
+		for (int j = 0;j < b->numCols;j++) {  //2x3
+			v = this->getValue(i, j) * b->getValue(i, j);
+			c->setValue(i, j, v);
 		}
 	}
 

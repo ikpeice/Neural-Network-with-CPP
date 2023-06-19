@@ -46,7 +46,7 @@ int main()
 	Neural_Net Nnet(topology);
 	Nnet.setInputValues(inputs);
 	Nnet.setTarget(inputs);
-	Nnet.train(1);
+	Nnet.train(1000);
 	//Nnet.feedForward();
 	//Nnet.setError();
 

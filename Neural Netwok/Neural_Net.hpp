@@ -25,7 +25,7 @@ public:
 	Matrix *getDerivedMatrix(int layerIndex);
 	Matrix *getWeigthMatrix(int layerIndex);
 
-	vector<double> getErrors() { return errors; }
+	//vector<double> getErrors() { return errors; }
 	
 	double getTotalError() { return errorSum; }
 
@@ -39,6 +39,7 @@ private:
 	vector<Layer*> layers;
 	vector<Matrix*> weightMatrixs;
 	vector<Matrix *> gradientMatrixs;
+	vector<Matrix *> errors;
 	void sigmoid_activate(Matrix *m);
 	Matrix *sigmoid_derivative(Matrix *m);
 	
@@ -46,7 +47,7 @@ private:
 
 	//vector<double> target;
 	double errorSum;
-	vector<double> errors;
+	//vector<double> errors;
 	vector<double> historicalError;
 };
 

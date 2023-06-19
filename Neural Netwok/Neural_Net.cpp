@@ -13,8 +13,11 @@ Neural_Net::Neural_Net(vector<int> topology_)
 	outputLayerIndex = layers.size() - 1;
 
 	for (int i = 0;i < topologySize - 1;i++) {
-		Matrix *M = new Matrix(topology.at(i), topology.at(i + 1),true);
+		Matrix *M = new Matrix(topology.at(i+1), topology.at(i),true);
 		weightMatrixs.push_back(M);
+		Matrix *c = new Matrix(topology.at(i + 1),1, false);
+		errors.push_back(c);
+
 	}
 }
 
@@ -78,12 +81,18 @@ void Neural_Net::printToConsole()
 void Neural_Net::train(int num_Iteration)
 {
 	Matrix *error = nullptr;
-	Matrix *adjusted_weight = nullptr;
-	Matrix *output = nullptr;
+	Matrix *delta_weight = nullptr;
+	Matrix *Y = nullptr;
+	Matrix *H = nullptr;
+	weightMatrixs.at(0)->printValues();
+	//cout << "=========\n";
+	//weightMatrixs.at(1)->printValues();
 	cout << "Start\n===============\n";
-	layers.at(outputLayerIndex)->getNeuronMatrix()->printValues();
+	//layers.at(outputLayerIndex)->getNeuronMatrix()->printValues();
 	Matrix *a = nullptr;
 	for (int k = 0;k < num_Iteration;k++) {
+
+		// forward propagation 
 		for (unsigned i = 0;i < layers.size() - 1;i++) {
 			if (i == 0) {
 				a = layers.at(i)->getInputMatrix();
@@ -92,37 +101,58 @@ void Neural_Net::train(int num_Iteration)
 				a = layers.at(i)->getNeuronMatrix();
 			}
 			Matrix *w = getWeigthMatrix(i);
-			Matrix *c = a->multiply(w);
-			//cout << "before ===============\n";
-			//c->printValues();
-			//cout << "after ===============\n";
+			// c = Sum of = (W1*X1 + W2*X2 . . . Wn*Xn) +bi where i is number
+			//cout << "i = " << i;
+			Matrix *c = w->dot(a->transpose()); 
 			sigmoid_activate(c);
 			//c->printValues();
 
-			// set the next layer neurons
-			for (unsigned j = 0;j < c->getNumCol();j++) {
-				//layers.at(i+1)->setNeuron(c->getValue(0, j), j);
-				setNeuronValue(i + 1, j, c->getValue(0, j));
-				//cout << c->getValue(0, j)<<endl;
+			// update the next layer neurons
+			for (unsigned j = 0;j < c->getNumRows();j++) {
+				setNeuronValue(i + 1, j, c->getValue(j, 0));
 			}
-			cout << "\n\n===============\n";
+			//cout << "===============\n";
 		}
 
-		layers.at(outputLayerIndex)->getNeuronMatrix()->printValues();
-		target->printValues();
-		for (int i = outputLayerIndex; i >1; i--) {
+		//layers.at(outputLayerIndex)->getNeuronMatrix()->printValues();
+		//output = layers.at(outputLayerIndex)->getNeuronMatrix();
+
+
+		// back propagation 
+		//target->printValues();
+		for (int i = outputLayerIndex; i >0; i--) {
 			if (i == outputLayerIndex) {
-				output = layers.at(i)->getNeuronMatrix();
-				error = target->minus(output);
+				// extract the output layer values since it is already activated
+				Y = layers.at(i)->getNeuronMatrix();
+				// compute the error
+				errors.at(i-1) = target->minus(Y);
+				
+				H = layers.at(i - 1)->getNeuronMatrix();
+				H = H->transpose();
+	
+			
+				//errors.at(i - 1)->multiply(sigmoid_derivative(Y))->printValues();
+				delta_weight = H->dot(errors.at(i - 1)->multiply(sigmoid_derivative(Y)));
+
+				weightMatrixs.at(i - 1) = weightMatrixs.at(i - 1)->plus(delta_weight->transpose());
+				
 			}
 			else {
-				output = layers.at(i)->getNeuronMatrix();
-				error = layers.at(i+1)->getNeuronMatrix()->minus(output);
-				cout << i << endl;
-				error->printValues();
-				adjusted_weight = error->transpose()->multiply(sigmoid_derivative(output));
-				adjusted_weight = layers.at(i - 1)->getInputMatrix()->transpose()->multiply(adjusted_weight);//
-																											 //weightMatrixs.at(i - 1) = weightMatrixs.at(i - 1)->plus(adjusted_weight);
+				
+				Y = layers.at(i)->getNeuronMatrix();
+				//cout << "ok1\n";
+				//Y->printValues();
+				//errors.at(i)->printValues();
+				//cout << "====\n";
+				//weightMatrixs.at(i)->transpose()->printValues();
+				errors.at(i - 1) = weightMatrixs.at(i)->transpose()->dot(errors.at(i)->transpose());
+				//cout << "ok2\n";
+				//errors.at(i - 1)->printValues();
+				H = layers.at(i - 1)->getNeuronMatrix();
+				//H->printValues();
+
+				delta_weight = errors.at(i - 1)->multiply(sigmoid_derivative(Y->transpose()))->dot(H);
+				weightMatrixs.at(i - 1) = weightMatrixs.at(i - 1)->plus(delta_weight);
 			}
 
 		}
