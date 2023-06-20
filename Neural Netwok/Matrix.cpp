@@ -117,12 +117,15 @@ double Matrix::getRandomNumber()
 
 void Matrix::printValues()
 {
+	cout << "\n[\n";
 	for (int i = 0;i < numRows;i++) {
+		cout << "[";
 		for (int j = 0;j < numCols;j++) {
-			cout << Values.at(i).at(j) << "\t";
+			cout << Values.at(i).at(j)<<" ";
 		}
-		cout << endl;
+		cout << "]\n";
 	}
+	cout << "]\n";
 }
 
 Matrix* Matrix::dot(Matrix *b)

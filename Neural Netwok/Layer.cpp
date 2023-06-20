@@ -23,9 +23,9 @@ void Layer::setNeuron(double value,int pos)
 
 Matrix * Layer::getInputMatrix()
 {
-	Matrix *M = new Matrix(1, numNeurons, false);
+	Matrix *M = new Matrix (numNeurons,1, false);
 	for (int i = 0;i < numNeurons;i++) {
-		M->setValue(0, i, neurons.at(i)->getVal());
+		M->setValue( i,0, neurons.at(i)->getVal());
 	}
 	return M;
 }
@@ -51,9 +51,9 @@ Matrix * Layer::getDerivedMatrix()
 }
 Matrix * Layer::getNeuronMatrix()
 {
-	Matrix *M = new Matrix(1, numNeurons, false);
+	Matrix *M = new Matrix(numNeurons,1, false);
 	for (int i = 0;i < numNeurons;i++) {
-		M->setValue(0, i, neurons.at(i)->getVal());
+		M->setValue( i,0, neurons.at(i)->getVal());
 	}
 	return M;
 }

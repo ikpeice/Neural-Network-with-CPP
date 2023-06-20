@@ -9,52 +9,65 @@ using namespace std;
 
 int main()
 {
-	
-	//Neuron n(1.5);
-	//
-
-	//cout << "Val = " << n.getVal() << "\n";
-	//cout << "Activate = " << n.getActivated() << endl;
-	//cout << "Derived = " << n.getDerivedVal() << endl;
-	//Matrix M(1, 3, true);
-	//Matrix b(1, 3, true);
-	//M.transpose()->printValues();
-	//cout << "---------------------" << endl;
-	//Matrix *c = M.multiply(b.transpose());
-	//c->printValues();
-	//cout << "---------------------" << endl;
-	//b.printValues();
-	//cout << "---------------------" << endl;
-	//Matrix *mM = M.multiply(&b);  // M x b
-
-	//mM->printValues();
-	//cout << "---------------------" << endl;
-	//Matrix *mT = M.transpose();
-	//mT->printValues();
-
 
 	vector<int> topology;
-	topology.push_back(3);
+	topology.push_back(2);
 	topology.push_back(2);
 	topology.push_back(3);
 
-	vector<double> inputs;
-	inputs.push_back(1.0);
-	inputs.push_back(0.0);
-	inputs.push_back(1.0);
+	vector<vector<double>> inputs;
+	inputs = {
+		{0,0,1},
+		{1,0,1},
+		{0,1,0},
+		{0,1,1},
+		{0,0,1},
+		{ 1,0,1 },
+		{ 0,1,0 },
+		{ 0,1,1 }
+	};
 
-	Neural_Net Nnet(topology);
-	Nnet.setInputValues(inputs);
-	Nnet.setTarget(inputs);
-	Nnet.train(1000);
-	//Nnet.feedForward();
-	//Nnet.setError();
+	vector<vector<double>>target;
+	target = { 
+		{ 0 },
+		{ 1 },
+		{ 1 },
+		{ 0 },
+		{ 0 },
+		{ 1 },
+		{ 1 },
+		{ 0 }
+	};
 
-	//Nnet.printToConsole();
+	Neural_Net Nnet(topology, inputs, target);
 
-	//cout << "Total error = " << Nnet.getTotalError() << endl;
+	Nnet.train(100, 0.1);
 
-	//Nnet.backPropagation();
+	//Nnet.printErrors();
+	vector<vector<double>> test;
+	test = {
+		{ 0,0,0 },
+		{ 0,0,0 },
+		{ 0,0,0 },
+		{ 0,0,0 },
+		{ 0,0,0 },
+		{ 0,0,1 },
+		{ 0,0,0 },
+		{ 0,0,0 }
+	};
+	vector<vector<double>> test2;
+	test2 = {
+		{ 0,0,1 },
+		{ 1,0,1 },
+		{ 0,1,0 },
+		{ 0,1,1 },
+		{ 0,0,1 },
+		{ 1,0,1 },
+		{ 0,1,0 },
+		{ 0,1,1 }
+	};
+	Nnet.predict(test2);
+	Nnet.predict(test);
 
 	cout << "\n---------------------\nDONE!";
 
