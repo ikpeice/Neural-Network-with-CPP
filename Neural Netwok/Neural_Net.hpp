@@ -9,13 +9,12 @@ class Neural_Net
 {
 public:
 	Neural_Net(vector<int> topology, vector<vector<double>> inputs, vector<vector<double>> targets);
-	void setInputValues(vector<vector<double>> inputs);
-	void setTarget(vector<vector<double>> targets);
+	void setInputValue(vector<vector<double>> inputs,int index);
+	void setTarget(vector<vector<double>> targets,int index);
 	void logError(Matrix *err);
 	void printErrors();
 	void train(int num_Iteration,double Lrate);
-	void predict(vector<vector<double>> data);
-	void backPropagation();
+	void predict(vector<double>data);
 	void setNeuronValue(int layerIndex, int neuronIndex, double value);
 
 
@@ -33,9 +32,10 @@ public:
 
 private:
 	int numLayers;
+	int numInput;
 	int outputLayerIndex;
 	Matrix *inputMatrix = nullptr;
-	Matrix *target = nullptr;
+	Matrix *targetMatrix = nullptr;
 	vector<int> topology;
 	vector<Layer*> layers;
 	vector<Matrix*> weightMatrixs;
@@ -44,9 +44,9 @@ private:
 	void sigmoid_activate(Matrix *m);
 	Matrix *sigmoid_derivative(Matrix *m);
 	
-	//vector<double> inputs;
+	vector<vector<double>> inputs;
 
-	//vector<double> target;
+	vector<vector<double>> target;
 	double errorSum;
 	//vector<double> errors;
 	vector<double> historicalError;

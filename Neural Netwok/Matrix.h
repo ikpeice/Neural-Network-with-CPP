@@ -9,7 +9,7 @@ using namespace std;
 class Matrix {
 public:
 	Matrix(){}
-	Matrix(int rows, int cols, bool isRandom);
+	Matrix(int rows, int cols, bool isRandom,double v=0.0);
 	Matrix* operator*(Matrix &b);
 	Matrix* minus(Matrix *b);
 	Matrix *plus(Matrix *b);

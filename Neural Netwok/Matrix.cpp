@@ -3,7 +3,7 @@
 #include "Matrix.h"
 
 
-Matrix::Matrix(int rows, int cols, bool isRandom)
+Matrix::Matrix(int rows, int cols, bool isRandom,double v=0.0)
 {
 	srand(time(NULL));
 	this->numRows = rows;
@@ -14,8 +14,7 @@ Matrix::Matrix(int rows, int cols, bool isRandom)
 	
 	for (int i = 0;i < rows;i++) {
 		vector<double> colValues;
-		for (int j = 0;j < cols;j++) {
-			double v = 0.0;
+		for (int j = 0;j < cols;j++) {			
 			if (isRandom) {
 				v =  getRandomNumber();
 			}
