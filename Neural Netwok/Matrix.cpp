@@ -3,7 +3,7 @@
 #include "Matrix.h"
 
 
-Matrix::Matrix(int rows, int cols, bool isRandom,double v=0.0)
+Matrix::Matrix(int rows, int cols, bool isRandom,double v)
 {
 	srand(time(NULL));
 	this->numRows = rows;

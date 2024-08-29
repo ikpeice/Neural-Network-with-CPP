@@ -11,7 +11,7 @@ int main()
 {
 
 	vector<int> topology;
-	topology.push_back(2);
+	topology.push_back(3);
 	//topology.push_back(2);
 	//topology.push_back(2);
 
@@ -20,11 +20,11 @@ int main()
 		{0,0,1},
 		{1,0,1},
 		{0,1,1},
-		{0,1,1},
+		{1,1,1},
 		{0,0,1},
 		{ 1,0,1 },
 		{ 0,1,0 },
-		{ 0,1,1 }
+		{ 1,1,1 }
 	};
 
 	vector<vector<double>>target;
@@ -43,7 +43,7 @@ int main()
 
 	Nnet.train(100, 0.1);
 
-	//Nnet.printErrors();
+	Nnet.printErrors();
 	vector<double> test;
 	test = { 1,1,1 };
 	vector<double> test2;
